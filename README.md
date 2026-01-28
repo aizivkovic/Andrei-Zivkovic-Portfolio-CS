@@ -1,1 +1,1 @@
-Portfollio of my undergraduate work in CS 151 at Loyola University Maryland.
+Portfolio of my undergraduate work in CS 151 at Loyola University Maryland.
