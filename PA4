@@ -1,1 +1,183 @@
 
+# Programmers:Andrei Zivkovic
+# Course: CS151, Professor Ebert
+# Due Date: 04/9/25
+# Programming Assignment: PA-4
+# Problem Statement:You are creating a program to analyze headlines from the Australian Broadcasting Company (ABC).
+#Your program is going to read in the file chosen by the user, and then allow them to request specific types of analysis
+# on that file.
+# Data In: file chosen by the user
+# Data Out: updated file information, word occurrences, headline with words, average length, longest headline
+
+
+def read_file(filename):
+    """
+    purpose: read headlines from a file
+    parameters: filename (str) - path to the file
+    returns: list - list of strings
+    """
+    headlines = []
+    try:
+        file = open(filename, 'r')
+        for line in file:
+            headlines.append(line.strip())
+        file.close()
+        print("Successfully read" , len(headlines), "headlines from" , filename)
+    except:
+        print("error: Could not read headlines from file", filename)
+
+    return headlines
+
+def count_word_occurrences(headlines, word):
+    """
+    purpose: count the headlines containing a certain word
+    parameters: headlines (list) - list of strings and word (str) - word to search for
+    return: int - count of headlines containing a certain word
+    """
+    count = 0
+    for headline in headlines:
+        if word.lower() in headline.lower():
+            count += 1
+    return count
+
+def find_headlines_with_words(headlines, word):
+    """
+    purpose: find headlines containing a certain word
+    parameters: headlines (list) - list of headlines strings and word (str) - word to search for
+    return: list - headlines containing a certain word
+    """
+    matching_headlines = []
+    for headline in headlines:
+        if word.lower() in headline.lower():
+            matching_headlines.append(headline)
+    return matching_headlines
+
+def write_headlines_to_file(headlines, filename):
+    """
+    purpose: write headlines to a file
+    parameters: headlines (list) - list of headlines strings and filename (str) - name of the output file
+    return: none
+    """
+    try:
+        file = open(filename, 'w')
+        for headline in headlines:
+            file.write(headline + '\n')
+        file.close()
+        print("Successfully written" , len(headlines), "headlines to" , filename)
+    except:
+        print("error: Could not write headlines to file", filename)
+
+def find_average_length(headlines):
+    """
+    purpose: find average character length of a list of headlines
+    parameters: headlines (list) - list of headlines strings
+    return: float - average character length
+    """
+    if len(headlines) == 0:
+        return 0
+
+    total_length = 0
+    for headline in headlines:
+        total_length = total_length + len(headline)
+
+    average = total_length / len(headlines)
+    return average
+
+def find_longest_headline(headlines):
+    """
+    purpose: find the longest headline by character count
+    parameters: headlines (list) - list of headlines strings
+    return: string - the longest headline
+    """
+    if len(headlines) == 0:
+        return ""
+
+    longest = headlines[0]
+    for headline in headlines:
+        if len(headline) > len(longest):
+            longest = headline
+
+    return longest
+
+def display_menu():
+    """
+    purpose: display the program menu
+    parameters: None
+    return: None
+    """
+    print("\n-------------------------------------------------")
+    print("WELCOME TO SYSTEM")
+    print("1. Count headlines containing a certain word")
+    print("2. Save headlines containing a specific word to a file")
+    print("3. Calculate average headline length")
+    print("4. Find longest headline")
+    print("5. Read a new headline file")
+    print("6. Exit program")
+    print("-----------------------------------------------")
+
+def main():
+    """
+    purpose: Main function program
+    parameters: None
+    return: None
+    """
+    print("ABC Headline Analysis Program")
+    print("This program analyzes headlines from the Australian Broadcasting Company.")
+    print("-------------------------------------------------")
+
+    # Get initial file from user
+    filename = input("Enter the name of the headline file to analyze")
+    headlines = read_file(filename)
+
+    while len(headlines) == 0:
+        filename = input("Enter the name of the headline file to analyze")
+        headlines = read_file(filename)
+
+    running = True
+    while running:
+        display_menu()
+
+        #get user choice
+        choice = input("enter your choice (1-6): ")
+
+        #process user choice
+        if choice == "1":
+            word = input("Enter the word to search for: ")
+            count = count_word_occurrences(headlines, word)
+            print("\nThe word '" + word + "' appears in" , count, "headlines.")
+
+        elif choice == "2":
+            word = input("Enter the word to search for: ")
+            matching_headlines = find_headlines_with_words(headlines, word)
+
+            if len(matching_headlines) > 0:
+                output_filename = input("Enter the name of the output file: ")
+                write_headlines_to_file(matching_headlines, output_filename)
+            else:
+                print("\nNo headlines found for the word '" + word + "'.\n")
+
+        elif choice == "3":
+            avg_length = find_average_length(headlines)
+            print("\nThe average length of headlines is" , round(avg_length, 1), "characters.")
+
+        elif choice == "4":
+            longest = find_longest_headline(headlines)
+            print("\nThe longest headline is (" + str(len(longest)) + " characters) is:")
+            print('"' + longest + '"')
+
+        elif choice == "5":
+            new_filename = input("Enter the name of the new file: ")
+            new_headlines = read_file(new_filename)
+            if len(new_headlines) > 0:
+                headlines = new_headlines
+                print("Now analyzing headlines from" , new_filename)
+
+        elif choice == "6":
+            print("\nThank you for using this program!")
+            running = False
+
+        else:
+            print("\nInvalid choice. Please try again and enter a number between 1 and 6.")
+
+# start the program
+main()
