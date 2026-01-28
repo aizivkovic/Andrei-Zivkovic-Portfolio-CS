@@ -5,7 +5,7 @@
 # Programming Assignment: PA-4
 # Problem Statement:You are creating a program to analyze headlines from the Australian Broadcasting Company (ABC).
 #Your program is going to read in the file chosen by the user, and then allow them to request specific types of analysis
-# on that file.
+# on that file
 # Data In: file chosen by the user
 # Data Out: updated file information, word occurrences, headline with words, average length, longest headline
 
